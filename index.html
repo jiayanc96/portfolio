@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jiayan Cao — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Sans+SC:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=3">
+<style>
+  /* --- 设计探索卡片：内嵌紧凑型多图轮播（hover 浮现式：浮动箭头 + 极简圆点） --- */
+  .thumb-carousel{position:relative;width:100%;height:100%;}
+  .thumb-carousel .tc-viewport{
+    width:100%;height:100%;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    padding:4px;box-sizing:border-box;
+  }
+  .thumb-carousel .tc-viewport img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;}
+  /* 浮动箭头：hover 时浮现，图片左右两侧垂直居中 */
+  .thumb-carousel .tc-btn{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:22px;height:22px;border-radius:50%;
+    background:rgba(20,24,28,0.45);color:#fff;border:none;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:13px;line-height:1;
+    opacity:0;transition:opacity 0.25s ease,background 0.15s;
+    z-index:2;backdrop-filter:blur(3px);
+  }
+  .thumb-carousel .tc-btn.prev-btn{left:6px;}
+  .thumb-carousel .tc-btn.next-btn{right:6px;}
+  .thumb-carousel:hover .tc-btn{opacity:1;}
+  .thumb-carousel .tc-btn:hover{background:rgba(20,24,28,0.7);}
+  /* 圆点指示器：底部居中，hover 时浮现 */
+  .thumb-carousel .tc-dots{
+    position:absolute;left:50%;transform:translateX(-50%);bottom:5px;
+    display:flex;gap:4px;z-index:2;
+    opacity:0;transition:opacity 0.25s ease;
+  }
+  .thumb-carousel:hover .tc-dots{opacity:1;}
+  .thumb-carousel .tc-dot{
+    width:4px;height:4px;border-radius:50%;
+    background:rgba(255,255,255,0.4);cursor:pointer;
+    transition:background 0.15s,transform 0.15s;
+  }
+  .thumb-carousel .tc-dot.on{background:#fff;transform:scale(1.3);}
+  .thumb-carousel .tc-dot:hover{background:rgba(255,255,255,0.7);}
+  /* 触屏设备：无 hover，始终显示控件 */
+  @media (hover: none){
+    .thumb-carousel .tc-btn,.thumb-carousel .tc-dots{opacity:1;}
+  }
+
+  /* --- Lightbox：点击研究类缩略图放大查看 --- */
+  .thumb-carousel .tc-viewport img.zoomable{cursor:zoom-in;}
+  .lightbox-overlay{
+    position:fixed;inset:0;z-index:9999;
+    background:rgba(20,24,28,0.92);
+    display:none;align-items:center;justify-content:center;
+    padding:32px;box-sizing:border-box;
+  }
+  .lightbox-overlay.show{display:flex;}
+  .lightbox-overlay img{
+    max-width:95vw;max-height:92vh;
+    width:auto;height:auto;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    border-radius:6px;background:#F7F4ED;
+  }
+  .lightbox-close{
+    position:absolute;top:18px;right:22px;
+    width:36px;height:36px;border:none;border-radius:50%;
+    background:rgba(255,255,255,0.15);color:#fff;
+    font-size:20px;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background 0.15s;
+  }
+  .lightbox-close:hover{background:rgba(255,255,255,0.3);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <div class="logo"><a href="index.html">Jiayan Cao</a></div>
+    <div class="navlinks">
+      <a href="index.html" class="active">案例</a>
+      <a href="architecture.html">方法论 &amp; 背景</a>
+      <a href="about.html">关于我</a>
+      <a href="assets/Resume_曹家彦.pdf?v=20260902" target="_blank" rel="noopener">简历 PDF</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="kicker">Product &amp; Interaction Designer</div>
+    <h1 class="hero-title">用系统性思维<br>把复杂问题变成 <em>可用</em> 的体验</h1>
+    <p class="hero-sub">5年医疗科技产品设计经验，参与15+款康复产品研发，主导其中多款产品的需求定义、原型迭代到交互落地，擅长在强工程约束与强合规要求下，依然做出清晰、可信、易上手的体验。</p>
+  </section>
+
+  <section id="featured-cases" class="section">
+    <div class="section-head">
+      <h2>精选案例</h2>
+      <div class="tag">Interaction design · UX research · Hardware-Software</div>
+    </div>
+    <div class="grid">
+      <a class="card featured-hero" href="d2.html">
+        <div class="thumb stage-unified d2-stage"><img src="assets/D2/d2_new.png" alt="D2"></div>
+        <h3>D2 下肢康复运动器</h3>
+        <p>当一台纯机械设备第一次联网，应该给用户什么样的数字体验？从零定义体验逻辑：目标管理、数据可视化与多角色数据授权边界。</p>
+        <div class="card-cta">查看案例 →</div>
+        <div class="spec">
+          <span class="cap">体验定义 · 数据设计</span>
+        </div>
+      </a>
+      <a class="card" href="ks.html">
+        <div class="thumb stage-unified ks-stage"><img src="assets/KS/ks_hero.jpg" alt="KS"></div>
+        <h3>KS 步态训练评估系统</h3>
+        <p>同一套系统如何同时服务治疗师和患者两类角色——从用户研究出发，经过 10+ 轮迭代，让两类用户都能顺利完成自己的任务。</p>
+        <div class="card-cta">查看案例 →</div>
+        <div class="spec">
+          <span class="cap">用户研究 · 界面系统</span>
+        </div>
+      </a>
+      <a class="card" href="vrras.html">
+        <div class="thumb stage-unified vrras-stage"><img src="assets/VRRAS/vrras_new.png" alt="VRRAS"></div>
+        <h3>VRRAS 步态康复机器人</h3>
+        <p>如何让枯燥的康复训练变成患者愿意主动完成的事？以游戏化交互场景为核心，同步推动人机工效优化，让设备进得了家门。</p>
+        <div class="card-cta">查看案例 →</div>
+        <div class="spec">
+          <span class="cap">交互设计 · 人机工效</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:32px;">
+    <div class="section-head">
+      <h2 style="font-size:18px;color:var(--ink-soft);">设计探索</h2>
+      <div class="tag">Early-stage · Research-led · Concept work</div>
+    </div>
+    <div class="grid cols-4">
+      <div class="card sm">
+        <div class="thumb" id="de-thumb-gg" style="height:150px;"></div>
+        <h3 style="font-size:16px;">GG 手功能康复机器人</h3>
+        <p>以人体尺寸研究为基础，与机械/结构工程师协作完成软织物外骨骼手套 5+ 轮打样，围绕"能不能自己穿上"反复权衡结构与舒适度。</p>
+        <div class="spec"><span class="cap">工业设计 · 协作打样</span><span>结构打样阶段</span></div>
+      </div>
+      <div class="card sm">
+        <div class="thumb" id="de-thumb-saas" style="height:150px;"></div>
+        <h3 style="font-size:16px;">康复 SaaS 平台 · 探索性用户研究</h3>
+        <p>主导体验定义阶段：通过内部多角色访谈构建用户画像与旅程图，识别各角色的核心痛点，定义功能优先级——研究先行，界面稿推进中。</p>
+        <div class="spec"><span class="cap">用户研究 · 体验定义</span><span>2025 — 至今</span></div>
+      </div>
+      <div class="card sm">
+        <div class="thumb" id="de-thumb-pain2" style="height:150px;"></div>
+        <h3 style="font-size:16px;">PAIN2 硬件交互</h3>
+        <p>没有屏幕，只有旋钮和一圈指示灯——如何用极简的物理媒介把设备的五种状态讲清楚？便携式理疗设备的物理交互逻辑推演。</p>
+        <div class="spec"><span class="cap">硬件交互 · 状态设计</span></div>
+      </div>
+      <div class="card sm">
+        <div class="thumb" id="de-thumb-ai" style="height:150px;"></div>
+        <h3 style="font-size:16px;">AI 辅助外观探索</h3>
+        <p>将 AI 图像工具（Midjourney）引入工业设计早期阶段，作为快速外观发散和概念验证的补充手段——降低前期探索成本，加速方向收敛。</p>
+        <div class="spec"><span class="cap">AI 辅助 · 概念探索</span><span>工具探索</span></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<a class="arch-strip" href="architecture.html" style="display:block;">
+  <div class="wrap">
+    <div>
+      <div class="kicker">Where the method comes from</div>
+      <h2>建筑学训练，是系统性思维的起点</h2>
+      <p>UCLA 建筑与城市设计硕士 · 爱荷华州立大学建筑学本科。建筑阶段的空间、结构与行为研究，塑造了我理解复杂系统的方法。后来在医疗产品设计中，我将这种思考延伸到人与设备、数据与体验之间的关系。</p>
+    </div>
+    <div class="cta">查看建筑作品 →</div>
+  </div>
+</a>
+
+<div class="wrap">
+  <footer class="simple">
+    <span>© 2026 Jiayan Cao. All rights reserved.</span>
+    <span>jiayancao1@163.com</span>
+  </footer>
+</div>
+
+<script>
+  // =====================================================
+  // Lightbox：缩略图点击放大查看（用于研究类内容）
+  // =====================================================
+  (function() {
+    var overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'lightbox-close';
+    closeBtn.setAttribute('aria-label', '关闭');
+    closeBtn.textContent = '×';
+    var overlayImg = document.createElement('img');
+    overlay.appendChild(closeBtn);
+    overlay.appendChild(overlayImg);
+    document.body.appendChild(overlay);
+
+    function open(src) {
+      overlayImg.src = src;
+      overlay.classList.add('show');
+    }
+    function close() {
+      overlay.classList.remove('show');
+      overlayImg.src = '';
+    }
+    closeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      close();
+    });
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) { close(); }
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && overlay.classList.contains('show')) { close(); }
+    });
+    window.__thumbLightbox = { open: open, close: close };
+  })();
+
+  // =====================================================
+  // 工具：分析图片边缘主色调，返回适配的容器背景色
+  // =====================================================
+  function detectImageBgColor(imgSrc, callback) {
+    var testImg = new Image();
+    testImg.crossOrigin = 'anonymous';
+    testImg.onload = function() {
+      try {
+        var canvas = document.createElement('canvas');
+        var w = testImg.naturalWidth;
+        var h = testImg.naturalHeight;
+        if (w === 0 || h === 0) { callback('#F3F0E8'); return; }
+        var sampleW = Math.min(w, 80);
+        var sampleH = Math.min(h, 80);
+        canvas.width = sampleW;
+        canvas.height = sampleH;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(testImg, 0, 0, sampleW, sampleH);
+        var data = ctx.getImageData(0, 0, sampleW, sampleH).data;
+
+        var samples = [];
+        function pushPixel(x, y) {
+          var i = (y * sampleW + x) * 4;
+          samples.push([data[i], data[i+1], data[i+2]]);
+        }
+        var corners = [[1,1], [sampleW-2,1], [1,sampleH-2], [sampleW-2,sampleH-2]];
+        corners.forEach(function(c) { pushPixel(c[0], c[1]); });
+        var step = 10;
+        for (var x = 0; x < sampleW; x += step) { pushPixel(x, 0); pushPixel(x, sampleH-1); }
+        for (var y = 0; y < sampleH; y += step) { pushPixel(0, y); pushPixel(sampleW-1, y); }
+
+        var rSum = 0, gSum = 0, bSum = 0;
+        samples.forEach(function(s) { rSum += s[0]; gSum += s[1]; bSum += s[2]; });
+        var r = Math.round(rSum / samples.length);
+        var g = Math.round(gSum / samples.length);
+        var b = Math.round(bSum / samples.length);
+        var lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+        var variance = 0;
+        samples.forEach(function(s) {
+          variance += Math.pow(s[0]-r,2) + Math.pow(s[1]-g,2) + Math.pow(s[2]-b,2);
+        });
+        variance = variance / samples.length;
+
+        var color;
+        if (variance < 600) {
+          if (lum > 230) { color = '#ffffff'; }
+          else if (lum < 25) { color = '#14181c'; }
+          else { color = 'rgb('+r+','+g+','+b+')'; }
+        } else {
+          if (lum > 180) { color = '#ffffff'; }
+          else if (lum < 60) { color = '#14181c'; }
+          else { color = '#F3F0E8'; }
+        }
+        callback(color);
+      } catch(e) {
+        callback('#F3F0E8');
+      }
+    };
+    testImg.onerror = function() { callback('#F3F0E8'); };
+    testImg.src = imgSrc;
+  }
+
+  // =====================================================
+  // 通用：内嵌紧凑型轮播（用于 thumb 区域多图展示）
+  // 手动切换 + 背景色随当前图片自动调整
+  // =====================================================
+  function createThumbCarousel(container, images, bgOverrides, zoomable) {
+    if (!container || container._inited) return;
+    container._inited = true;
+    container.innerHTML = '';
+    bgOverrides = bgOverrides || {};
+    zoomable = !!zoomable;
+
+    var idx = 0;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'thumb-carousel';
+
+    var viewport = document.createElement('div');
+    viewport.className = 'tc-viewport';
+    var img = document.createElement('img');
+    if (zoomable) { img.classList.add('zoomable'); }
+    viewport.appendChild(img);
+    wrap.appendChild(viewport);
+
+    var dots;
+    if (images.length > 1) {
+      var prev = document.createElement('button');
+      prev.className = 'tc-btn prev-btn';
+      prev.innerHTML = '‹';
+      prev.onclick = function(e) {
+        e.stopPropagation();
+        idx = (idx - 1 + images.length) % images.length;
+        render();
+      };
+
+      dots = document.createElement('div');
+      dots.className = 'tc-dots';
+      images.forEach(function(_, i) {
+        var d = document.createElement('span');
+        d.className = 'tc-dot' + (i === 0 ? ' on' : '');
+        d.onclick = function(e) {
+          e.stopPropagation();
+          idx = i;
+          render();
+        };
+        dots.appendChild(d);
+      });
+
+      var next = document.createElement('button');
+      next.className = 'tc-btn next-btn';
+      next.innerHTML = '›';
+      next.onclick = function(e) {
+        e.stopPropagation();
+        idx = (idx + 1) % images.length;
+        render();
+      };
+
+      wrap.appendChild(prev);
+      wrap.appendChild(dots);
+      wrap.appendChild(next);
+    }
+
+    container.appendChild(wrap);
+
+    if (zoomable && window.__thumbLightbox) {
+      img.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.__thumbLightbox.open(img.src);
+      });
+    }
+
+    function applyBg(targetImg, viewportEl, currentIdx) {
+      var key = 'i' + currentIdx;
+      if (bgOverrides[key]) {
+        viewportEl.style.background = bgOverrides[key];
+        return;
+      }
+      if (bgOverrides._default) {
+        viewportEl.style.background = bgOverrides._default;
+        return;
+      }
+      detectImageBgColor(targetImg.src, function(color) {
+        viewportEl.style.background = color;
+      });
+    }
+
+    function render() {
+      img.src = images[idx];
+      img.onload = function() { applyBg(img, viewport, idx); img.onload = null; };
+      applyBg(img, viewport, idx);
+      if (images.length > 1) {
+        Array.prototype.forEach.call(dots.children, function(d, i) {
+          d.classList.toggle('on', i === idx);
+        });
+      }
+    }
+    render();
+  }
+
+  // =====================================================
+  // 设计探索卡片轮播初始化
+  // 往数组里追加图片路径即可扩展，一旦 length > 1 会自动出现箭头和圆点
+  // =====================================================
+
+  // GG 手功能康复机器人 — 6 张图
+  createThumbCarousel(document.getElementById('de-thumb-gg'), [
+    'assets/GG/场景1.png?v=20260711a',
+    'assets/GG/场景2.jpg?v=20260711a',
+    'assets/GG/样机.jpg?v=20260711a',
+    'assets/GG/process.png?v=20260711a',
+    'assets/GG/模型1.png?v=20260711a',
+    'assets/GG/模型2.png?v=20260711a'
+  ], { _default: '#F3F0E8' });
+
+  // AI 辅助外观探索 — 6 张图
+  createThumbCarousel(document.getElementById('de-thumb-ai'), [
+    'assets/ai/set1.jpg?v=20260711a',
+    'assets/ai/set2.jpg?v=20260711a',
+    'assets/ai/set3.jpg?v=20260711a',
+    'assets/ai/set4.jpg?v=20260711a',
+  ], { _default: '#F3F0E8' });
+  // PAIN2 硬件交互 — 2 张图
+  createThumbCarousel(document.getElementById('de-thumb-pain2'), [
+    'assets/PAIN2/pain2_device.png',
+    'assets/PAIN2/render.png?v=20260709e',
+    'assets/PAIN2/草图1.png?v=20260709e',
+    'assets/PAIN2/草图2.png?v=20260709e',
+    'assets/PAIN2/交互.png?v=20260709e'
+
+  ], { _default: '#F3F0E8' });
+
+  // 康复 SaaS 平台 · 探索性用户研究 — 2 张图（点击可放大查看）
+  createThumbCarousel(document.getElementById('de-thumb-saas'), [
+    'assets/saas/saas_ecosystem.png',
+    'assets/saas/saas_painpoints.png'
+  ], { _default: '#F7F4ED' }, true);
+</script>
+
+</body>
+</html>

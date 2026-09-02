@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2 — Jiayan Cao</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Sans+SC:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=3">
+</head>
+<body>
+
+<div class="wrap narrow">
+  <nav>
+    <div class="logo"><a href="index.html">Jiayan Cao</a></div>
+    <a class="back" href="index.html">← 返回全部案例</a>
+  </nav>
+
+  <div class="case-head">
+    <div class="case-tags"><span>体验定义</span><span>数据可视化</span><span>权限设计</span></div>
+    <h1 class="case-title">D2 下肢康复运动器</h1>
+    <p class="case-sub">一台纯机械的骑行训练设备第一次要联网——D2 要做的不是加功能，而是从零定义：康复设备联网之后，应该给用户提供什么样的数字体验？</p>
+
+    <div class="meta-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="m"><div class="k">角色</div><div class="v">体验设计 + 交互定义</div></div>
+      <div class="m"><div class="k">周期</div><div class="v">2021 — 至今</div></div>
+      <div class="m"><div class="k">平台</div><div class="v">硬件 + iOS App</div></div>
+    </div>
+
+    <div class="note-box accent">
+      <div class="dot"></div>
+      <p><span class="label">角色与协作</span>本人负责 App 的体验逻辑定义、功能规划与交互设计；蓝牙通信、后端数据系统与硬件电路由对应工程师团队完成。此外，我定义了完整的交互逻辑与页面结构，借助 LLM 工具将设计意图转化为可运行的高保真原型，以消除设计与研发之间的沟通摩擦。该原型方案已由公司完成软件著作权登记。</p>
+    </div>
+  </div>
+
+  <img class="hero-img stage" src="assets/D2/d2_new.png" alt="D2 device render">
+  <p class="img-caption">↑ D2 设备外观渲染图</p>
+
+  <div class="body-section">
+    <div class="st">01 — 问题</div>
+    <div>
+      <h2>一台纯机械设备，第一次要联网</h2>
+      <p>D1 是一台纯机械的骑行训练设备，患者练了多久、练得怎么样全靠自己感觉，没有任何数据反馈。D2 解决的核心问题不是硬件升级，而是从零定义：一台康复设备联网之后，应该给用户提供什么样的数字体验？</p>
+      <p>这要求我们在设计初期明确三个边界：<b>采集了参数后要给用户呈现什么数据</b>（避免患者认知过载）；<b>如何让患者感受到进展而非压力</b>（康复患者易因数据焦虑或缺乏正反馈而放弃）；<b>如何兼容复杂的商业场景与多角色流转</b>（B端/C端/租赁模式并存）。</p>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="st">02 — 核心体验设计</div>
+    <div>
+      <h2>目标引导与可视化反馈</h2>
+      <p>D2 构建了一套围绕“完成感”与“周期对比”的温和训练逻辑：</p>
+      <ul>
+        <li><b>克制的数据呈现</b> — 虽然底层能采集角速度、最大速度等多种参数，但在进行态（Active Training）中，仅展示最容易感知的：骑行速度、骑行时长、骑行距离。</li>
+        <li><b>适度的目标设定</b> — 患者运动能力有限，过高或过低的目标都会起反作用。系统支持灵活定制训练计划，让每次训练回归“只要做了就是胜利”的无压力状态，并通过日历打卡做基础记录。</li>
+        <li><b>周期性进展可视化</b> — 在统计模块中，图示化呈现当前周期与前一周期的核心数据对比。患者无需苛刻的挑战，只需直观看到自己每周微小的进步曲线。</li>
+      </ul>
+      <div class="img-row four">
+        <div style="position:relative;">
+          <img src="assets/D2/实时.png" alt="D2 今日概览界面">
+        </div>
+        <div style="position:relative;">
+          <img src="assets/D2/计划编辑.png" alt="D2 训练计划界面">
+        </div>
+        <div style="position:relative;">
+          <img src="assets/D2/周统计.png" alt="D2 历史统计界面（周）">
+        </div>
+        <div style="position:relative;">
+          <img src="assets/D2/月统计.png" alt="D2 历史统计界面（月）">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="st">03 — 业务细节</div>
+    <div>
+      <h2>基于扫码的多角色与设备绑定机制</h2>
+      <p>设备最终可能流向 B 端机构共用，也可能被 C 端购买或租赁。在商业模式不确定的情况下，强行的“设备-账号绑定”体验会极其糟糕。</p>
+      <p>因此，系统采用了数字码与二维码两种绑定方式：用户扫码即可获取当前设备的使用权限，适应不同场景的流转。同时，康复过程往往需要家属和治疗师的参与，他们也可以通过扫码与患者账号建立绑定关系——仅限查看患者的训练进展，无法进行修改，在“跨角色监控”和“患者隐私控制”之间画下了清晰的边界。</p>
+    <div class="img-row three">
+      <div style="position:relative;">
+        <img src="assets/D2/远程监护.png" alt="D2 远程监护">
+      </div>
+      <div style="position:relative;">
+        <img src="assets/D2/授权码.png" alt="D2 授权用户">
+      </div>
+      <div style="position:relative;">
+        <img src="assets/D2/患者数据同步.png" alt="D2 患者数据">
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <a class="back" href="index.html">← 全部案例</a>
+    <a class="next" href="ks.html">下一个案例<b>KS 步态训练评估系统 →</b></a>
+  </footer>
+  <div style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);padding:0 0 32px;">© 2026 Jiayan Cao. All rights reserved.</div>
+</div>
+
+</body>
+</html>

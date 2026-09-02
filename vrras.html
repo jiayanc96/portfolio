@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VRRAS — Jiayan Cao</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Sans+SC:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=3">
+</head>
+<body>
+
+<div class="wrap narrow">
+  <nav>
+    <div class="logo"><a href="index.html">Jiayan Cao</a></div>
+    <a class="back" href="index.html">← 返回全部案例</a>
+  </nav>
+
+  <div class="case-head">
+    <div class="case-tags">
+      <span>交互设计</span><span>游戏化体验</span><span>工业设计</span>
+    </div>
+    <h1 class="case-title">VRRAS 视听觉节律刺激步态机器人</h1>
+    <p class="case-sub">如何让一次枯燥的步态康复训练，变成患者愿意主动完成的事——用游戏化的视听反馈，把居家康复设备的"专业感"和"参与感"做在同一台机器上。</p>
+
+    <div class="meta-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="m"><div class="k">角色</div><div class="v">工业设计 + 交互设计</div></div>
+      <div class="m"><div class="k">周期</div><div class="v">2021 — 至今</div></div>
+      <div class="m"><div class="k">平台</div><div class="v">硬件 + Unity 交互场景</div></div>
+    </div>
+
+    <div class="note-box accent">
+      <div class="dot"></div>
+      <p><span class="label">角色与协作</span>本人负责整机外形工业设计与人机工效推进；与项目负责人共同定义软件的功能边界、游戏化交互方案与视听反馈逻辑，并参与了早期 Unity 原型的场景和交互逻辑搭建。软件最终由外部资源团队落地，本人团队负责硬件与交互原型，两侧并轨对接。</p>
+    </div>
+  </div>
+
+  <img class="hero-img stage" src="assets/VRRAS/render.png" alt="VRRAS device">
+  <p class="img-caption">↑ VRRAS 设备外观渲染图</p>
+
+  <div class="body-section">
+    <div class="st">01 — 问题</div>
+    <div>
+      <h2>专业的康复训练，为什么很难在家坚持</h2>
+      <p>步态障碍（帕金森、脑卒中）的康复需要长期、规律的步行训练。但传统步态训练设备是为医院设计的：体积大、操作复杂、缺乏反馈激励，患者独自居家训练时极易因枯燥而放弃。VRRAS 要解决的不是技术问题，而是一个体验问题：<b>如何让一台医疗步行机，变成患者愿意每天主动使用的东西？</b></p>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="st">02 — 外形设计</div>
+    <div>
+      <h2>把"专业医疗设备"做成可以放进客厅的样子</h2>
+      <p>整机外观由本人主导设计。核心目标是在保证康复设备必要的稳定性与安全感的前提下，大幅压缩体积与视觉压迫感，让它能真正进入家庭空间。</p>
+      <ul>
+        <li><b>整机小型化</b> — 相比医院级大型步态训练系统，压缩至家庭场景可用的尺寸与重量</li>
+        <li><b>人机工效优化</b> — 主导整机结构比例优化，降低搬运与日常操作门槛</li>
+        <li><b>安全束带迭代验证</b> — 防摔束带经过多轮物理打样，在安全防护与不妨碍步行自由度之间反复权衡</li>
+        <li><b>视觉语言</b> — 黄色握把与安全部件在深色机身上形成清晰的操作分区，兼顾专业感与亲和力</li>
+      </ul>
+      <img src="assets/VRRAS/草图.png" alt="VRRAS design process" style="width:100%;border-radius:6px;border:0.5px solid var(--line);margin-top:20px;">
+      <p class="img-caption" style="margin-top:8px;">↑ 从早期方案探索到后期整机形态收敛</p>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="st">03 — 交互方案</div>
+    <div>
+      <h2>定义一套让步态训练"有响应"的视听反馈系统</h2>
+      <p>方案的核心是两种互补的刺激机制：</p>
+      <ul>
+        <li><b>节律性刺激（Rhythmic Cue）</b> — 以目标步频为节拍，在屏幕上产生规律的视觉与听觉节律，引导患者步态向目标靠拢</li>
+        <li><b>夹带刺激（Entrainment Cue）</b> — 实时检测患者触地信号，每一步都触发即时的视听反馈，让训练过程"有回应"而非单向输出</li>
+      </ul>
+      <p>在此基础上定义了多种游戏化训练场景，将不同病症的临床特征映射为差异化的游戏机制：</p>
+      <ul>
+        <li><b>脑卒中 — 步态不对称纠正</b> — 患者常见画圈步态（健侧代偿导致步态不对称），游戏中设置步态不对称度参数，可按训练进度渐进调整，引导患者逐步纠正偏移</li>
+        <li><b>帕金森 — 步频节律锚定</b> — 患者常见渐进步态（行走中不自主加速），以目标步频的视听节律为锚点，辅助患者按节拍踏步、抑制加速倾向</li>
+      </ul>
+      <p>每种场景均设有难度梯度，适配不同恢复阶段。</p>
+      <img src="assets/VRRAS/界面关系图.png" alt="VRRAS interface planning" style="width:100%;border-radius:6px;border:0.5px solid var(--line);margin-top:20px;">
+      <p class="img-caption" style="margin-top:8px;">↑ 交互流程与游戏化训练场景方案（设计定义阶段素材）</p>
+      <div class="img-row three" style="margin-top:20px;">
+        <img src="assets/VRRAS/实景训练.png" alt="VRRAS 实景训练">
+        <img src="assets/VRRAS/叠叠高.png" alt="VRRAS 叠叠高">
+        <img src="assets/VRRAS/节奏大师.png" alt="VRRAS 节拍匹配训练">
+      </div>
+      <p class="img-caption" style="margin-top:8px;">↑ 游戏化场景界面图</p>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="st">04 — 一个细节</div>
+    <div>
+      <h2>为帕金森患者设计的启动引导协议</h2>
+      <div class="quote-block"><p>在康复场景里，安全感和可信感，是比任何游戏功能都更底层的设计要求。</p></div>
+      <p>帕金森患者的冻结步态最典型的表现是起步犹豫——脚步无法迈出。VRRAS 在正式训练前设置了启动引导阶段：系统通过语音口号引导患者踏出第一步，并实时检测踏步信号，连续踏步达标后才正式进入训练模式。这一交互流程在方案定义阶段经过反复推敲。</p>
+      <svg viewBox="0 0 860 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin-top:20px;background:var(--paper-alt);border-radius:8px;border:0.5px solid var(--line);">
+        <defs>
+          <marker id="arrow-v" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 z" fill="#5B6169"/>
+          </marker>
+        </defs>
+        <style>
+          .fbox{fill:#F7F5F0;stroke:#5B6169;stroke-width:1;}
+          .fbox.main{fill:#DCEAE7;stroke:#1F6E64;}
+          .flbl{font-family:'IBM Plex Sans SC',sans-serif;font-size:13px;fill:#14181C;text-anchor:middle;}
+          .flbl-sm{font-family:'IBM Plex Mono',monospace;font-size:10.5px;fill:#5B6169;text-anchor:middle;}
+          .fedge{stroke:#5B6169;stroke-width:1;fill:none;marker-end:url(#arrow-v);}
+        </style>
+        <rect x="20" y="50" width="130" height="40" rx="4" class="fbox main"/>
+        <text x="85" y="75" class="flbl">训练启动</text>
+        <path class="fedge" d="M150,70 L185,70"/>
+        <rect x="190" y="50" width="130" height="40" rx="4" class="fbox"/>
+        <text x="255" y="75" class="flbl">语音口号引导</text>
+        <text x="255" y="108" class="flbl-sm">引导患者踏出第一步</text>
+        <path class="fedge" d="M320,70 L355,70"/>
+        <rect x="360" y="50" width="130" height="40" rx="4" class="fbox"/>
+        <text x="425" y="75" class="flbl">实时踏步检测</text>
+        <path class="fedge" d="M490,70 L525,70"/>
+        <rect x="530" y="50" width="130" height="40" rx="4" class="fbox"/>
+        <text x="595" y="75" class="flbl">连续踏步达标</text>
+        <text x="595" y="108" class="flbl-sm">达到设定阈值</text>
+        <path class="fedge" d="M660,70 L695,70"/>
+        <rect x="700" y="50" width="130" height="40" rx="4" class="fbox main"/>
+        <text x="765" y="75" class="flbl">进入正式训练</text>
+      </svg>
+      <p class="img-caption" style="margin-top:8px;">↑ 启动引导协议流程</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <a class="back" href="ks.html">← KS</a>
+    <a class="next" href="index.html">返回全部案例 →</a>
+  </footer>
+  <div style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);padding:0 0 32px;">© 2026 Jiayan Cao. All rights reserved.</div>
+</div>
+
+</body>
+</html>

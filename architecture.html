@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>建筑作品 &amp; 方法论 — Jiayan Cao</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Sans+SC:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=3">
+<style>
+  /* --- 新增：视频徽标 --- */
+  .video-badge{
+    position:absolute;top:10px;right:10px;z-index:2;
+    display:flex;align-items:center;gap:5px;
+    background:rgba(20,24,28,0.78);color:#F7F5F0;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.04em;
+    padding:4px 9px;border-radius:12px;text-transform:uppercase;
+  }
+  .video-badge svg{width:9px;height:9px;fill:#F7F5F0;}
+  .card.sm{position:relative;}
+  .grad-note{
+    margin-top:24px;padding:16px 20px;background:var(--paper-alt);border-radius:6px;
+    font-size:13px;line-height:1.7;color:var(--ink-soft);
+  }
+  .grad-note b{color:var(--ink);font-weight:500;}
+
+  /* --- 新增：子视频悬停与提示样式 --- */
+  .sub-video-portal {
+    flex: 1;
+    aspect-ratio: 16/9;
+    background: var(--ink);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    cursor: crosshair; /* 提示可交互 */
+    border: 0.5px solid rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .sub-video-portal video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+  }
+  .sub-video-portal .hint-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+    background: rgba(20,24,28,0.2);
+  }
+  .sub-video-portal .hint-overlay span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    color: var(--paper);
+    background: rgba(0,0,0,0.65);
+    padding: 4px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    backdrop-filter: blur(2px);
+  }
+  .sub-video-portal:hover {
+    transform: translateY(-2px);
+    border-color: var(--ink);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .sub-video-portal:hover video {
+    opacity: 1;
+  }
+  .sub-video-portal:hover .hint-overlay {
+    opacity: 0; /* 悬停时提示消失 */
+  }
+
+  /* --- 新增：微型切换按钮样式 --- */
+  .video-tabs button:hover {
+    background: var(--paper-alt) !important;
+    color: var(--ink) !important;
+    border-color: var(--line) !important;
+  }
+
+  /* --- 新增：多图轮播组件（固定容器大小，图片完整显示不裁切） --- */
+  .img-carousel{position:relative;margin-top:10px;width:100%;}
+  .car-viewport{
+    width:100%;aspect-ratio:4/3;max-height:200px;border-radius:3px;overflow:hidden;
+    border:0.5px solid var(--line);display:flex;align-items:center;justify-content:center;
+  }
+  .car-viewport img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;}
+  /* --- Process Diagrams 大轮播：控件优化（圆形箭头 + 缩放圆点） --- */
+  .car-controls{
+    display:flex;align-items:center;justify-content:space-between;
+    margin-top:8px;gap:8px;width:100%;
+  }
+  .car-arrow{
+    width:24px;height:24px;border-radius:50%;flex-shrink:0;
+    background:transparent;color:var(--ink-soft);
+    border:0.5px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:14px;line-height:1;
+    transition:all 0.2s;
+  }
+  .car-arrow:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .car-dots{display:flex;gap:5px;justify-content:center;flex:1;}
+  .car-dot{width:5px;height:5px;border-radius:50%;background:var(--line);cursor:pointer;transition:all 0.15s;}
+  .car-dot.on{background:var(--accent);transform:scale(1.2);}
+  .car-dot:hover{background:var(--ink-soft);}
+  .car-caption{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);
+    text-align:center;margin-top:5px;width:100%;min-height:13px;
+  }
+
+  /* --- 小卡片内嵌紧凑轮播（hover 浮现式：浮动箭头 + 极简圆点） --- */
+  .thumb-carousel{position:relative;width:100%;height:100%;}
+  .thumb-carousel .tc-viewport{
+    width:100%;height:100%;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    padding:4px;box-sizing:border-box;
+  }
+  .thumb-carousel .tc-viewport img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;}
+  /* 浮动箭头：hover 时浮现，图片左右两侧垂直居中 */
+  .thumb-carousel .tc-btn{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:22px;height:22px;border-radius:50%;
+    background:rgba(20,24,28,0.45);color:#fff;border:none;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:13px;line-height:1;
+    opacity:0;transition:opacity 0.25s ease,background 0.15s;
+    z-index:2;backdrop-filter:blur(3px);
+  }
+  .thumb-carousel .tc-btn.prev-btn{left:6px;}
+  .thumb-carousel .tc-btn.next-btn{right:6px;}
+  .thumb-carousel:hover .tc-btn{opacity:1;}
+  .thumb-carousel .tc-btn:hover{background:rgba(20,24,28,0.7);}
+  /* 圆点指示器：底部居中，hover 时浮现 */
+  .thumb-carousel .tc-dots{
+    position:absolute;left:50%;transform:translateX(-50%);bottom:5px;
+    display:flex;gap:4px;z-index:2;
+    opacity:0;transition:opacity 0.25s ease;
+  }
+  .thumb-carousel:hover .tc-dots{opacity:1;}
+  .thumb-carousel .tc-dot{
+    width:4px;height:4px;border-radius:50%;
+    background:rgba(255,255,255,0.4);cursor:pointer;
+    transition:background 0.15s,transform 0.15s;
+  }
+  .thumb-carousel .tc-dot.on{background:#fff;transform:scale(1.3);}
+  .thumb-carousel .tc-dot:hover{background:rgba(255,255,255,0.7);}
+  /* 触屏设备：无 hover，始终显示控件 */
+  @media (hover: none){
+    .thumb-carousel .tc-btn,.thumb-carousel .tc-dots{opacity:1;}
+  }
+
+  /* --- 简化后的切换面板（层级区分）--- */
+  .tab-row{display:flex;}
+  .tab-row + .tab-row{border-top:0.5px solid var(--line);}
+  .tab-btn{
+    flex:1;border:none;background:transparent;color:var(--ink-soft);
+    padding:6px 4px;cursor:pointer;font-family:'IBM Plex Mono',monospace;
+    font-size:10px;transition:all 0.15s;letter-spacing:0.02em;
+  }
+  .tab-btn + .tab-btn{border-left:0.5px solid var(--line);}
+  .tab-btn.on{background:var(--paper-alt);color:var(--ink);font-weight:500;}
+
+  /* 层级1：主要阶段选项 - 视觉上更突出 */
+  .tab-row.stage-level .tab-btn{
+    padding:8px 4px;font-size:10.5px;font-weight:500;
+    color:var(--ink);background:rgba(239,235,226,0.45);
+    text-transform:uppercase;letter-spacing:0.04em;
+  }
+  .tab-row.stage-level .tab-btn.on{
+    background:var(--ink);color:var(--paper);
+    box-shadow:inset 0 -2px 0 var(--accent);
+  }
+  /* 层级2：子视图选项 - 视觉上更轻，并整体左侧缩进以强化"从属于上一行"的空间关系 */
+  .tab-row.view-level{padding-left:14px;}
+  .tab-row.view-level .tab-btn{
+    padding:5px 4px;font-size:9.5px;color:var(--ink-soft);
+  }
+  .tab-row.view-level .tab-btn.on{
+    background:transparent;color:var(--accent);font-weight:500;
+    border-bottom:1.5px solid var(--accent);
+  }
+
+  /* 本科阶段卡片图片：复用 thumb-carousel 组件（与 Koons/Wukang 缩略图一致），
+     图片按原始比例完整显示、不裁切、不拉伸；支持后续在同一容器内追加多图轮播 */
+  .arch-ug-thumb{
+    background: linear-gradient(180deg, #F3F0E8 0%, #EAE7DE 100%);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <div class="logo"><a href="index.html">Jiayan Cao</a></div>
+    <div class="navlinks">
+      <a href="index.html">案例</a>
+      <a href="architecture.html" class="active">方法论 &amp; 背景</a>
+      <a href="about.html">关于我</a>
+      <a href="assets/Resume_曹家彦.pdf?v=20260902" target="_blank" rel="noopener">简历 PDF</a>
+    </div>
+  </nav>
+
+  <div class="hero" style="padding:64px 0 48px;">
+    <div class="kicker">Where the method comes from</div>
+    <h1 class="hero-title" style="font-size:38px;">建筑学训练，是系统性思维的起点</h1>
+    <p class="hero-sub">本科到硕士的建筑训练，教会我如何把一个复杂问题拆解成场地、结构、流线与体验，再重新组织成一个整体——这套思考方式，后来延续进了每一次产品与交互设计里。以下是这段训练中的代表性作品。</p>
+    <div class="hero-meta">
+      <div class="item"><div class="num">MSAUD</div><div class="label">UCLA 建筑与城市设计硕士</div></div>
+      <div class="item"><div class="num">Arch</div><div class="label">爱荷华州立大学 建筑学本科</div></div>
+    </div>
+  </div>
+ <!-- ============ 研究生阶段（新增） ============ -->
+ <div class="section-head" style="margin-bottom:20px;">
+  <h2 style="font-size:20px;">研究生阶段 · UCLA MSAUD（Technology方向）</h2>
+  <div class="tag">2020 — 2021</div>
+</div>
+<p style="font-size:14px;color:var(--ink-soft);line-height:1.8;max-width:680px;margin:-8px 0 32px;">
+  一年制项目，围绕 XR / 机器学习与空间的交叉展开探索，是我最早接触AI辅助设计工具（Runway、机器学习图像生成）的阶段。受限于一年制的节奏，作品更偏向概念验证而非完整落地方案。
+</p>
+
+<!-- A Virtual Cocoon 大卡片 (独占整行) -->
+<div class="card featured-hero" style="display:flex; gap:40px; align-items:flex-start; flex-wrap:wrap; margin-bottom:24px; width:100%; border:0.5px solid var(--line); border-radius:4px;">
+  <!-- 左侧：主视觉与叙事链条 -->
+  <div style="flex:1.2; min-width:320px;">
+    <div class="thumb" style="height:auto; aspect-ratio:16/9; margin-bottom:12px; position:relative; overflow:hidden; border-radius:8px; background:var(--paper-alt);">
+      <div class="video-badge">
+        <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        交互预览 
+      </div>
+      <video class="smart-video" src="assets/fall/fall video1.mp4" poster="assets/fall/fall_video1_cover.jpg" muted loop playsinline preload="none" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block;"></video>
+    </div>
+    <!-- 下方三个小方块，采用悬停播放 + 视觉提示 -->
+    <div style="display:flex; gap:12px;">
+      <div class="sub-video-portal">
+        <div class="hint-overlay"><span>Hover</span></div>
+        <video src="assets/fall/fall video2.mp4" poster="assets/fall/fall_video2_cover.jpg" muted loop playsinline preload="none"></video>
+      </div>
+      <div class="sub-video-portal">
+        <div class="hint-overlay"><span>Hover</span></div>
+        <video src="assets/fall/fall video3.mp4" poster="assets/fall/fall_video3_cover.jpg" muted loop playsinline preload="none"></video>
+      </div>
+      <div class="sub-video-portal">
+        <div class="hint-overlay"><span>Hover</span></div>
+        <video src="assets/fall/fall video4.mp4" poster="assets/fall/fall_video4_cover.jpg" muted loop playsinline preload="none"></video>
+      </div>
+    </div>
+  </div>
+  
+  <!-- 右侧：文字说明与过程文件展示 -->
+  <div style="flex:1; min-width:300px;">
+    <h3 style="font-size:24px;">A Virtual Cocoon</h3>
+    <div class="en" style="margin-bottom:16px;">Home as an Ecology of Interactive Media</div>
+    <p style="font-size:14.5px; line-height:1.75; color:var(--ink-soft);">用点云建模将真实居住空间数字化，结合AI风格迁移（Runway ML）与草间弥生作品重构空间视觉语言；随后加入VR与分子料理元素，将菜谱拆解为虚拟纹理，构建厨房场景的沉浸式体验。</p>
+    
+    <!-- 过程图 (Runway ML / 点云) -->
+    <div style="margin-top:28px; padding-top:20px; border-top:1px dashed var(--line);">
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; color:var(--ink-soft); margin-bottom:12px;">Process Diagrams</div>
+      <div class="img-carousel"
+           data-bg-overrides='{"_default":"#ffffff"}'
+           data-images='["assets/fall/Experience Concept.png","assets/fall/Style-Transfer Matrix.png","assets/fall/AR Interaction Diagram.png","assets/fall/UI Interaction.png","assets/fall/Modeling Concept.png","assets/fall/Modeling Technique1.png","assets/fall/Modeling Technique2.png","assets/fall/VR Interaction Diagram.png","assets/fall/VR Scale-Gesture Diagram.png"]'
+           data-captions='["空间体验概念","风格迁移矩阵","AR 交互示意图","UI 交互","建模概念","建模技术","建模技术","VR 交互示意图","VR 空间尺度示意图"]'></div>
+    </div>
+    
+    <div class="spec" style="margin-top:32px;"><span>2020 Fall – 2021 Winter</span><span>UCLA MSAUD</span></div>
+  </div>
+</div>
+
+<!-- NiFTy Museum 核心大卡片 ( featured-hero 双栏结构，与 A Virtual Cocoon 保持 100% 一致 ) -->
+<div class="card featured-hero" style="display:flex; gap:40px; align-items:flex-start; flex-wrap:wrap; margin-bottom:32px; width:100%; border:0.5px solid var(--line); border-radius:4px;">
+  <!-- 左侧：主视觉与 3 个 Hover 悬停播放 Portal -->
+  <div style="flex:1.2; min-width:320px;">
+    <div class="thumb" style="height:auto; aspect-ratio:16/9; margin-bottom:12px; position:relative; overflow:hidden; border-radius:8px; background:var(--paper-alt);">
+      <div class="video-badge">
+        <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        空间漫游
+      </div>
+      <video class="smart-video" src="assets/nifty/nifty_fly through.mp4" poster="assets/nifty/nifty_hero_cover.jpg" muted loop playsinline preload="none" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block;"></video>
+    </div>
+    <!-- 下方两个小 Portal 方块 (对应拍卖大厅两个视角)，采用悬停播放 + 视觉提示 -->
+    <div style="display:flex; gap:12px;">
+      <div class="sub-video-portal" style="flex:1;">
+        <div class="hint-overlay"><span>Hover</span></div>
+        <video src="assets/nifty/nifty_portal1.mp4" poster="assets/nifty/nifty_portal1_cover.jpg" muted loop playsinline preload="none"></video>
+      </div>
+      <div class="sub-video-portal" style="flex:1;">
+        <div class="hint-overlay"><span>Hover</span></div>
+        <video src="assets/nifty/nifty_portal2.mp4" poster="assets/nifty/nifty_portal2_cover.jpg" muted loop playsinline preload="none"></video>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右侧：文字说明与 Process 学术过程图解 -->
+  <div style="flex:1; min-width:300px;">
+    <h3 style="font-size:24px;">NiFTy Museum</h3>
+    <div class="en" style="margin-bottom:16px;">VR Cryptoart Exhibition &amp; Marketplace in Hilbert Structure</div>
+    <p style="font-size:14.5px; line-height:1.75; color:var(--ink-soft);">
+      艺术“去物质化”与线上展览交互的探讨，项目基于希尔伯特三维结构（Hilbert Structure）构建去中心化的 VR 加密艺术（Cryptoart）展馆与交易平台构想。通过从立方体中剪切球体体量，提炼出适配平面、视频、3D雕塑与拍卖等不同功能形态的模块组件；用户在无方向感的 MC Escher 式重力错觉空间中，借助VR手柄实现空间探索与竞拍交互。
+    </p>
+
+    <!-- 过程图 (Process Section) -->
+    <div style="margin-top:28px; padding-top:20px; border-top:1px dashed var(--line);">
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; text-transform:uppercase; color:var(--ink-soft); margin-bottom:12px;">Process Diagrams </div>
+      <div class="img-carousel"
+           data-bg-overrides='{"_default":"#000000"}'
+           data-images='["assets/nifty/geometry222.png","assets/nifty/divide cube22.jpg","assets/nifty/geometry3.jpg","assets/nifty/auction111_9.gif","assets/nifty/grid and module.png","assets/nifty/interaction diagram.jpg"]'
+           data-captions='["模块提取与组合","网格与人体尺度映射","形态、功能与人体尺度映射矩阵","Hilbert网格与子空间划分","形态总体演变推导","竞拍交互流程"]'></div>
+    </div>
+
+    <div class="spec" style="margin-top:32px;"><span>2021 Spring</span><span>UCLA MSAUD (Technology)</span></div>
+  </div>
+</div>
+
+<div class="section-head" style="margin-bottom:16px;">
+  <h2 style="font-size:14px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.06em;font-family:'IBM Plex Mono',monospace;font-weight:400;">其他 · Seminar Explorations</h2>
+</div>
+<div class="grid cols-3" style="margin-bottom:24px;">
+
+  <!-- Card 1: ML 城市界面生成 -->
+  <div class="card sm">
+    <div class="thumb" style="height:180px; position:relative; overflow:hidden; border-radius:6px 6px 0 0; background:var(--paper-alt); margin-bottom:0;">
+      <!-- 结果视频 -->
+      <video id="ml-video-1" class="smart-video" src="assets/seminar/seminar_video1.1_clip.mp4" poster="assets/seminar/seminar_video1.1_cover.jpg" muted loop playsinline preload="none" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block;"></video>
+      <video id="ml-video-2" class="smart-video" src="assets/seminar/seminar_video1.2_clip.mp4" poster="assets/seminar/seminar_video1.2_cover.jpg" muted loop playsinline preload="none" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:none;"></video>
+      <!-- 数据集大图 -->
+      <img id="ml-p-dataset-a" src="assets/seminar/seminar_dataset_a.png" alt="Porous Dataset A" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; background:#ffffff; display:none;">
+      <img id="ml-p-dataset-b" src="assets/seminar/seminar_dataset_b.png" alt="Porous Dataset B" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; background:#ffffff; display:none;">
+      <img id="ml-g-dataset-a" src="assets/seminar/seminar_wg_dataset_a.png" alt="With Green Dataset A" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; background:#ffffff; display:none;">
+      <img id="ml-g-dataset-b" src="assets/seminar/seminar_wg_dataset_b.png" alt="With Green Dataset B" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:contain; background:#ffffff; display:none;">
+    </div>
+
+    <!-- 切换面板（双层级结构：第一行主要阶段，第二行子视图） -->
+    <div style="margin-bottom:20px; border:0.5px solid var(--line); border-top:none; border-radius:0 0 4px 4px; overflow:hidden;">
+      <div class="tab-row stage-level">
+        <button class="tab-btn on" onclick="mlSelectStage(1)" id="ml-btn-s1">Porous City</button>
+        <button class="tab-btn" onclick="mlSelectStage(2)" id="ml-btn-s2">With Green</button>
+      </div>
+      <div class="tab-row view-level">
+        <button class="tab-btn" onclick="mlSelectView('a')" id="ml-btn-da">Data A</button>
+        <button class="tab-btn" onclick="mlSelectView('b')" id="ml-btn-db">Data B</button>
+        <button class="tab-btn on" onclick="mlSelectView('result')" id="ml-btn-res">Result</button>
+      </div>
+    </div>
+
+    <h3>ML 城市界面生成</h3>
+    <div class="en">Synthetic City: Air Circulation &amp; Purification</div>
+    <p style="font-size:13px; line-height:1.65; color:var(--ink-soft); margin-bottom:16px;">
+      后疫情时代高密度城市与住房未来的探讨。项目借助机器学习探索改进健康居住环境的城市生成手段：阶段一引入多孔结构数据集训练 Porous City 以促进空气流通与通风性能；阶段二进一步叠加绿色立面数据集，赋予建筑形态空气净化的生态干预能力。
+    </p>
+    <div class="spec">
+      <span>2021 Spring</span><span>UCLA AUD Seminar</span>
+    </div>
+  </div>
+
+  <!-- Card 2: Make Art Like Jeff Koons -->
+  <div class="card sm">
+    <div class="thumb" style="height:180px; position:relative; overflow:hidden; border-radius:6px 6px 0 0; background:var(--paper-alt); margin-bottom:0;">
+      <video id="koons-video-1" class="smart-video" src="assets/jeff koons/koons_video4.mp4" poster="assets/jeff koons/koons_video4_cover.jpg" muted loop playsinline preload="none" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block;"></video>
+      <div id="koons-diagram-carousel" style="position:absolute; top:0; left:0; width:100%; height:100%; display:none;"></div>
+    </div>
+
+    <!-- 切换面板 -->
+    <div style="margin-bottom:20px; border:0.5px solid var(--line); border-top:none; border-radius:0 0 4px 4px; overflow:hidden;">
+      <div class="tab-row">
+        <button class="tab-btn on" onclick="koonsSelectMode('video')" id="koons-btn-v">VR Video</button>
+        <button class="tab-btn" onclick="koonsSelectMode('diagram')" id="koons-btn-d">Diagram</button>
+      </div>
+    </div>
+
+    <h3>Make Art Like Jeff Koons</h3>
+    <div class="en">MMXD: Interactive Objects in VR</div>
+    <p style="font-size:13px; line-height:1.6; color:var(--ink-soft); margin-bottom:16px;">
+      在 VR 中设计可交互的混合媒体展品。我们以 Jeff Koons 的充气雕塑为灵感，通过 VR 手柄交互将 Koons 的创作逻辑转化为一种可操控的空间体验。
+    </p>
+    <div class="spec">
+      <span>2020 Fall</span><span>UCLA AUD Seminar</span>
+    </div>
+  </div>
+
+  <!-- Card 3: Wukang Refresh -->
+  <div class="card sm">
+    <div class="thumb" style="height:180px; position:relative; overflow:hidden; border-radius:6px 6px 0 0; background:var(--paper-alt); margin-bottom:0;">
+      <video id="wukang-video" class="smart-video" src="assets/wukang/Wukang_AR_App.mp4" poster="assets/wukang/Wukang_AR_App_cover.jpg" muted loop playsinline preload="none" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; display:block;"></video>
+      <div id="wukang-diagram-carousel" style="position:absolute; top:0; left:0; width:100%; height:100%; display:none;"></div>
+    </div>
+
+    <!-- 切换面板 -->
+    <div style="margin-bottom:20px; border:0.5px solid var(--line); border-top:none; border-radius:0 0 4px 4px; overflow:hidden;">
+      <div class="tab-row">
+        <button class="tab-btn on" onclick="wukangSelectMode('video')" id="wukang-btn-v">AR Video</button>
+        <button class="tab-btn" onclick="wukangSelectMode('diagram')" id="wukang-btn-d">Diagram</button>
+      </div>
+    </div>
+
+    <h3>Wukang Refresh</h3>
+    <div class="en">Urban Hack(ing): AR Spatial Intervention</div>
+    <p style="font-size:13px; line-height:1.6; color:var(--ink-soft); margin-bottom:16px;">
+      以建筑作为数字媒介画布，用 AR 技术干预城市建成环境。我们对武康大楼外立面进行三维扫描重建，通过手机 AR 叠加流体粒子力场特效，以"Fluid &amp; Smooth"的形式语言重新激活这座建筑的存在感。
+    </p>
+    <div class="spec">
+      <span>2021 Spring</span><span>UCLA AUD Seminar</span>
+    </div>
+  </div>
+
+</div>
+
+
+  <!-- ============ 本科阶段 ============ -->
+  <div class="section-head" style="margin-bottom:20px;">
+    <h2 style="font-size:20px;">本科阶段 · 爱荷华州立大学</h2>
+    <div class="tag">2015 — 2020</div>
+  </div>
+  <p style="font-size:14px;color:var(--ink-soft);line-height:1.8;max-width:680px;margin:-8px 0 32px;">
+    五年制项目。从材料尺度的建造实验到城市尺度的交通枢纽设计，逐步建立从细节到系统的完整系统性思维。
+  </p>
+  <div class="grid cols-3" style="margin-bottom:64px;">
+    <div class="card sm">
+      <div class="thumb arch-ug-thumb" id="ug-thumb-hotel"></div>
+      <h3>Wai Kai</h3>
+      <div class="en">Resort &amp; Spa · Waikiki, Hawaii</div>
+      <p>夏威夷度假酒店。以环抱式弧形平面回应海景与钻石头山双景观轴线，确保每间客房享有最佳视野；波浪形立面兼顾南向遮阳与观景。</p>
+      <div class="spec"><span>2020 Spring</span><span>4人组</span></div>
+    </div>
+
+    <div class="card sm">
+      <div class="thumb arch-ug-thumb" id="ug-thumb-songjiang"></div>
+      <h3>Songjiang Lightrail Station</h3>
+      <div class="en">Transit Station Redesign</div>
+      <p>松江轻轨站点复合化改造。在交通功能上叠加商业、住宿与展览，以立体化策略回应站点周边步行可达性差的现状。</p>
+      <div class="spec"><span>2019</span><span>个人项目</span></div>
+    </div>
+
+    <div class="card sm">
+      <div class="thumb arch-ug-thumb" id="ug-thumb-museum"></div>
+      <h3>Maritime Museum</h3>
+      <div class="en">Venice Arsenal Museum</div>
+      <p>威尼斯军械库海事博物馆。以潮汐涨落隐喻军械库的历史兴衰，伞状结构悬浮于水面，随潮位变化重塑空间体验。</p>
+      <div class="spec"><span>2018 Fall</span><span>2人组</span></div>
+    </div>
+
+    <div class="card sm">
+      <div class="thumb arch-ug-thumb" id="ug-thumb-citytower"></div>
+      <h3>City Tower</h3>
+      <div class="en">A Redefined Lifestyle in the Future</div>
+      <p>面向未来居住形态的思辨性塔楼。将模块化住宅单元垂直整合，探讨高密度环境下居住与城市通勤基础设施的共生关系。</p>
+      <div class="spec"><span>2018</span><span>个人项目</span></div>
+    </div>
+
+    <div class="card sm">
+      <div class="thumb arch-ug-thumb" id="ug-thumb-creekside"></div>
+      <h3>Creekside Life Plan Community</h3>
+      <div class="en">Senior Living Community</div>
+      <p>滨水老年康养社区规划。以适老化尺度组织居住、医疗与公共活动空间，营造支持独立生活的疗愈环境。</p>
+      <div class="spec"><span>2018 Spring</span><span>4人组</span></div>
+    </div>
+
+    <div class="card sm">
+      <div class="thumb arch-ug-thumb" id="ug-thumb-shift"></div>
+      <h3>Shift Installation</h3>
+      <div class="en">Outdoor Public Installation</div>
+      <p>实木堆叠建造的户外公共装置。从设计到施工全程参与，完成从图纸到真实落地的完整建造经验。</p>
+      <div class="spec"><span>2017 Spring</span><span>集体建造</span></div>
+    </div>
+  </div>
+
+ 
+
+  <footer class="simple" style="margin-top:40px;">© 2026 Jiayan Cao. All rights reserved. — jiayancao1@163.com</footer>
+</div>
+
+<script>
+  // 1. 子视频 Hover 播放逻辑
+  document.querySelectorAll('.sub-video-portal').forEach(function(portal) {
+    var vid = portal.querySelector('video');
+    portal.addEventListener('mouseenter', function() {
+      if (vid) vid.play().catch(function(e){});
+    });
+    portal.addEventListener('mouseleave', function() {
+      if (vid) vid.pause();
+    });
+  });
+
+  // 2. 主视频 IntersectionObserver 视口自动播放
+  // 阈值收紧：需露出50%以上才播放，去掉额外缓冲区，避免加载时多个视频同时判定为"可见"而一起自动播放
+  var smartVideoObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      var vid = entry.target;
+      if (entry.isIntersecting) {
+        if (vid.style.display !== 'none') {
+          vid.play().catch(function(e){});
+        }
+      } else {
+        vid.pause();
+      }
+    });
+  }, { rootMargin: '0px', threshold: 0.5 });
+
+  document.querySelectorAll('.smart-video').forEach(function(vid) {
+    smartVideoObserver.observe(vid);
+  });
+
+  // ---- 仪器面板按钮激活态 ----
+  function panelActivate(activeId, allIds) {
+    allIds.forEach(function(id) {
+      var b = document.getElementById(id);
+      if (!b) return;
+      b.classList.toggle('on', id === activeId);
+    });
+  }
+
+  // 3. ML 城市界面生成：双层联动微视窗
+  var mlStage = 1;
+  var mlView = 'result';
+
+  function mlHideAll() {
+    ['ml-video-1','ml-video-2','ml-p-dataset-a','ml-p-dataset-b','ml-g-dataset-a','ml-g-dataset-b'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = 'none';
+      if (el.tagName === 'VIDEO') { el.pause(); el.currentTime = 0; }
+    });
+  }
+
+  function mlRender(wasPlaying) {
+    mlHideAll();
+    panelActivate('ml-btn-s' + mlStage, ['ml-btn-s1', 'ml-btn-s2']);
+    var viewBtnId = mlView === 'result' ? 'ml-btn-res' : (mlView === 'a' ? 'ml-btn-da' : 'ml-btn-db');
+    panelActivate(viewBtnId, ['ml-btn-da', 'ml-btn-db', 'ml-btn-res']);
+
+    var showId;
+    if (mlView === 'a') {
+      showId = mlStage === 1 ? 'ml-p-dataset-a' : 'ml-g-dataset-a';
+    } else if (mlView === 'b') {
+      showId = mlStage === 1 ? 'ml-p-dataset-b' : 'ml-g-dataset-b';
+    } else {
+      showId = mlStage === 1 ? 'ml-video-1' : 'ml-video-2';
+    }
+
+    var el = document.getElementById(showId);
+    if (!el) return;
+    el.style.display = 'block';
+
+    if (el.tagName === 'VIDEO') {
+      if (wasPlaying) {
+        el.play().catch(function(){});
+      } else {
+        var rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.play().catch(function(){});
+        }
+      }
+    }
+  }
+
+  function mlSelectStage(stage) {
+    if (stage === mlStage) return;
+    var curId = mlStage === 1 ? 'ml-video-1' : 'ml-video-2';
+    var curVid = document.getElementById(curId);
+    var wasPlaying = curVid && !curVid.paused;
+    mlStage = stage;
+    mlRender(wasPlaying);
+  }
+
+  function mlSelectView(view) {
+    if (view === mlView) return;
+    var curId = mlStage === 1 ? 'ml-video-1' : 'ml-video-2';
+    var curVid = document.getElementById(curId);
+    var wasPlaying = curVid && !curVid.paused;
+    mlView = view;
+    mlRender(wasPlaying);
+  }
+
+  // =====================================================
+  // 工具：分析图片边缘主色调，返回适配的容器背景色
+  // 通过四角 + 边缘取样，判断是亮底/暗底/其他
+  // =====================================================
+  function detectImageBgColor(imgSrc, callback) {
+    var testImg = new Image();
+    testImg.crossOrigin = 'anonymous';
+    testImg.onload = function() {
+      try {
+        var canvas = document.createElement('canvas');
+        var w = testImg.naturalWidth;
+        var h = testImg.naturalHeight;
+        if (w === 0 || h === 0) { callback('#fafafa'); return; }
+        var sampleW = Math.min(w, 80);
+        var sampleH = Math.min(h, 80);
+        canvas.width = sampleW;
+        canvas.height = sampleH;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(testImg, 0, 0, sampleW, sampleH);
+        var data = ctx.getImageData(0, 0, sampleW, sampleH).data;
+
+        var samples = [];
+        function pushPixel(x, y) {
+          var i = (y * sampleW + x) * 4;
+          samples.push([data[i], data[i+1], data[i+2]]);
+        }
+        var corners = [
+          [1,1], [sampleW-2,1], [1,sampleH-2], [sampleW-2,sampleH-2]
+        ];
+        corners.forEach(function(c) { pushPixel(c[0], c[1]); });
+        var step = 10;
+        for (var x = 0; x < sampleW; x += step) { pushPixel(x, 0); pushPixel(x, sampleH-1); }
+        for (var y = 0; y < sampleH; y += step) { pushPixel(0, y); pushPixel(sampleW-1, y); }
+
+        var rSum = 0, gSum = 0, bSum = 0;
+        samples.forEach(function(s) { rSum += s[0]; gSum += s[1]; bSum += s[2]; });
+        var r = Math.round(rSum / samples.length);
+        var g = Math.round(gSum / samples.length);
+        var b = Math.round(bSum / samples.length);
+        var lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+        var variance = 0;
+        samples.forEach(function(s) {
+          variance += Math.pow(s[0]-r,2) + Math.pow(s[1]-g,2) + Math.pow(s[2]-b,2);
+        });
+        variance = variance / samples.length;
+
+        var color;
+        if (variance < 600) {
+          if (lum > 230) { color = '#ffffff'; }
+          else if (lum < 25) { color = '#14181c'; }
+          else { color = 'rgb('+r+','+g+','+b+')'; }
+        } else {
+          if (lum > 180) { color = '#ffffff'; }
+          else if (lum < 60) { color = '#14181c'; }
+          else { color = 'rgb('+r+','+g+','+b+')'; }
+        }
+        callback(color);
+      } catch(e) {
+        callback('#fafafa');
+      }
+    };
+    testImg.onerror = function() { callback('#fafafa'); };
+    testImg.src = imgSrc;
+  }
+
+  // =====================================================
+  // 通用：内嵌紧凑型轮播（用于 thumb 区域 diagram 模式）
+  // 仅手动控制 + 背景色随当前图片自动调整
+  // =====================================================
+  function createThumbCarousel(container, images, bgOverrides) {
+    if (container._inited) return;
+    container._inited = true;
+    container.innerHTML = '';
+    bgOverrides = bgOverrides || {};
+
+    var idx = 0;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'thumb-carousel';
+
+    var viewport = document.createElement('div');
+    viewport.className = 'tc-viewport';
+    var img = document.createElement('img');
+    viewport.appendChild(img);
+    wrap.appendChild(viewport);
+
+    var dots;
+    if (images.length > 1) {
+      var prev = document.createElement('button');
+      prev.className = 'tc-btn prev-btn';
+      prev.innerHTML = '‹';
+      prev.onclick = function(e) {
+        e.stopPropagation();
+        idx = (idx - 1 + images.length) % images.length;
+        render();
+      };
+
+      dots = document.createElement('div');
+      dots.className = 'tc-dots';
+      images.forEach(function(_, i) {
+        var d = document.createElement('span');
+        d.className = 'tc-dot' + (i === 0 ? ' on' : '');
+        d.onclick = function(e) {
+          e.stopPropagation();
+          idx = i;
+          render();
+        };
+        dots.appendChild(d);
+      });
+
+      var next = document.createElement('button');
+      next.className = 'tc-btn next-btn';
+      next.innerHTML = '›';
+      next.onclick = function(e) {
+        e.stopPropagation();
+        idx = (idx + 1) % images.length;
+        render();
+      };
+
+      wrap.appendChild(prev);
+      wrap.appendChild(dots);
+      wrap.appendChild(next);
+    }
+
+    container.appendChild(wrap);
+
+    function applyBg(targetImg, viewportEl, currentIdx) {
+      var key = 'i' + currentIdx;
+      if (bgOverrides[key]) {
+        viewportEl.style.background = bgOverrides[key];
+        return;
+      }
+      if (bgOverrides._default) {
+        viewportEl.style.background = bgOverrides._default;
+        return;
+      }
+      detectImageBgColor(targetImg.src, function(color) {
+        viewportEl.style.background = color;
+      });
+    }
+
+    function render() {
+      img.src = images[idx];
+      img.onload = function() { applyBg(img, viewport, idx); img.onload = null; };
+      applyBg(img, viewport, idx);
+      if (images.length > 1) {
+        Array.prototype.forEach.call(dots.children, function(d, i) {
+          d.classList.toggle('on', i === idx);
+        });
+      }
+    }
+    render();
+  }
+
+  // 4. Koons 模式切换
+  var koonsCarouselReady = false;
+  function koonsSelectMode(mode) {
+    var vid = document.getElementById('koons-video-1');
+    var car = document.getElementById('koons-diagram-carousel');
+    panelActivate(mode === 'video' ? 'koons-btn-v' : 'koons-btn-d', ['koons-btn-v', 'koons-btn-d']);
+    if (mode === 'video') {
+      if (car) car.style.display = 'none';
+      if (vid) { vid.style.display = 'block'; vid.play().catch(function(){}); }
+    } else {
+      if (vid) { vid.style.display = 'none'; vid.pause(); }
+      if (car) {
+        car.style.display = 'block';
+        if (!koonsCarouselReady) {
+          koonsCarouselReady = true;
+          createThumbCarousel(car, [
+            'assets/jeff koons/koons_interaction_diagram.png',
+            'assets/jeff koons/koons_object_diagram.png',
+            'assets/jeff koons/interaction.png'
+          ], {
+            _default: '#ffffff'
+          });
+        }
+      }
+    }
+  }
+
+  // 5. Wukang 模式切换
+  var wukangCarouselReady = false;
+  function wukangSelectMode(mode) {
+    var vid = document.getElementById('wukang-video');
+    var car = document.getElementById('wukang-diagram-carousel');
+    panelActivate(mode === 'video' ? 'wukang-btn-v' : 'wukang-btn-d', ['wukang-btn-v', 'wukang-btn-d']);
+    if (mode === 'video') {
+      if (car) car.style.display = 'none';
+      if (vid) { vid.style.display = 'block'; vid.play().catch(function(){}); }
+    } else {
+      if (vid) { vid.style.display = 'none'; vid.pause(); }
+      if (car) {
+        car.style.display = 'block';
+        if (!wukangCarouselReady) {
+          wukangCarouselReady = true;
+          createThumbCarousel(car, [
+            'assets/wukang/wukang_interaction_diagram.png',
+            'assets/wukang/wukang_feature_diagram.png',
+            'assets/wukang/concept.png',
+            'assets/wukang/render.png'
+          ], {
+            'i0': '#ffffff',
+            'i1': '#ffffff',
+            'i2': '#F5F2EB',
+            'i3': '#F5F2EB'
+          });
+        }
+      }
+    }
+  }
+
+  // 6.5 本科阶段 6 个项目缩略图（复用 createThumbCarousel，与 Koons/Wukang 卡片一致）
+  //     现在每个项目放 3 个占位（复用现有图），替换路径后即可展示不同图片。
+  //     一旦数组里有出现不同的真实图片，箭头和圆点会自动生效。
+
+  createThumbCarousel(document.getElementById('ug-thumb-museum'), [
+    'assets/museum/室外1.png?v=20260708c',
+    'assets/museum/program and circulation.png?v=20260708c',  // ← 替换为第 2 张图（如 arch_tides_2.jpg）
+    'assets/museum/爆炸图.png?v=20260708c',   // ← 替换为第 3 张图（如 arch_tides_3.jpg）
+    'assets/museum/剖面图.png?v=20260708c',
+    'assets/museum/落潮效果图.png?v=20260708c',
+    'assets/museum/涨潮效果图.png?v=20260708c',
+    'assets/museum/室内效果图1.png?v=20260708c',
+    'assets/museum/室内效果图2.png?v=20260708c',
+    'assets/museum/室外2.png?v=20260708c'
+  ], { _default: '#F3F0E8' });
+
+  createThumbCarousel(document.getElementById('ug-thumb-shift'), [
+    'assets/shift/成果图.png?v=20260708c',
+    'assets/shift/总览.png?v=20260708c',  
+    'assets/shift/process1.png?v=20260708c',   
+    'assets/shift/process2.png?v=20260708c',   
+    'assets/shift/process3.png?v=20260708c',   
+  ], { _default: '#F3F0E8' });
+
+  createThumbCarousel(document.getElementById('ug-thumb-citytower'), [
+    'assets/tower/render.jpg?v=20260708c',
+    'assets/tower/爆炸图与尺度关系.png?v=20260708c',  
+    'assets/tower/section.png?v=20260708c'   
+  ], { _default: '#F3F0E8' });
+
+  createThumbCarousel(document.getElementById('ug-thumb-creekside'), [
+    'assets/creekside/top.jpg?v=20260808a',
+    'assets/creekside/circulation.png?v=20260708c',  
+    'assets/creekside/section1.png?v=20260708c',   
+    'assets/creekside/section2.png?v=20260708c',   
+    'assets/creekside/render1.png?v=20260708c', 
+    'assets/creekside/render2.png?v=20260708c',
+    'assets/creekside/render3.png?v=20260708c'  
+  ], { _default: '#F3F0E8' });
+
+  createThumbCarousel(document.getElementById('ug-thumb-songjiang'), [
+  'assets/station/效果图1.png?v=20260708c', 
+  'assets/station/总览.png?v=20260708c',
+    'assets/station/site plan.png?v=20260708c',  
+    'assets/station/剖面图.png?v=20260708c',
+    'assets/station/效果图2.png?v=20260708c',  
+    'assets/station/效果图3.png?v=20260708c',       
+  ], { _default: '#F3F0E8' });
+
+  createThumbCarousel(document.getElementById('ug-thumb-hotel'), [
+    'assets/waikai/street view.png',
+    'assets/waikai/diagrams.png',  // ← 替换为第 2 张图
+    'assets/waikai/circulation.png',   // ← 替换为第 3 张图
+    'assets/waikai/render1.png',
+    'assets/waikai/render2.png',
+    'assets/waikai/render3.png',
+    'assets/waikai/rooftop.png',
+  ], { _default: '#F3F0E8' });
+
+  // 6. 通用紧凑型多图轮播组件（用于 Cocoon / Nifty 等大卡片右侧下方的 process 图）
+  //    手动切换 + 背景色：优先 data-bg-overrides，其次自动检测，最终回退 #fafafa
+  document.querySelectorAll('.img-carousel').forEach(function(root) {
+    var images = JSON.parse(root.getAttribute('data-images') || '[]');
+    var captions = JSON.parse(root.getAttribute('data-captions') || '[]');
+    var bgOverrides = {};
+    try {
+      var raw = root.getAttribute('data-bg-overrides');
+      if (raw) bgOverrides = JSON.parse(raw);
+    } catch(e) { bgOverrides = {}; }
+    if (images.length === 0) return;
+    var idx = 0;
+
+    var viewport = document.createElement('div');
+    viewport.className = 'car-viewport';
+    var img = document.createElement('img');
+    viewport.appendChild(img);
+    root.appendChild(viewport);
+
+    var controls;
+    var dots;
+    if (images.length > 1) {
+      controls = document.createElement('div');
+      controls.className = 'car-controls';
+
+      var prev = document.createElement('button');
+      prev.className = 'car-arrow';
+      prev.innerHTML = '‹';
+      prev.onclick = function() { idx = (idx - 1 + images.length) % images.length; render(); };
+
+      dots = document.createElement('div');
+      dots.className = 'car-dots';
+      images.forEach(function(_, i) {
+        var d = document.createElement('span');
+        d.className = 'car-dot';
+        d.onclick = function() { idx = i; render(); };
+        dots.appendChild(d);
+      });
+
+      var next = document.createElement('button');
+      next.className = 'car-arrow';
+      next.innerHTML = '›';
+      next.onclick = function() { idx = (idx + 1) % images.length; render(); };
+
+      controls.appendChild(prev);
+      controls.appendChild(dots);
+      controls.appendChild(next);
+      root.appendChild(controls);
+    }
+
+    var caption = document.createElement('div');
+    caption.className = 'car-caption';
+    root.appendChild(caption);
+
+    function applyBg(currentIdx) {
+      var key = 'i' + currentIdx;
+      if (bgOverrides[key]) {
+        viewport.style.background = bgOverrides[key];
+        return;
+      }
+      if (bgOverrides._default) {
+        viewport.style.background = bgOverrides._default;
+        return;
+      }
+      detectImageBgColor(img.src, function(color) {
+        viewport.style.background = color;
+      });
+    }
+
+    function render() {
+      img.src = images[idx];
+      caption.textContent = captions[idx] || '';
+      img.onload = function() { applyBg(idx); img.onload = null; };
+      applyBg(idx);
+      if (dots) {
+        Array.prototype.forEach.call(dots.children, function(d, i) {
+          d.classList.toggle('on', i === idx);
+        });
+      }
+    }
+    render();
+  });</script>
+</body>
+</html>

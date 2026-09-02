@@ -1,0 +1,31 @@
+# Project data
+.workbuddy/
+
+# Experimental v2 files
+index_v2.html
+d2_v2.html
+
+# Source files
+*.psd
+
+# Large unreferenced files (not used by any HTML page)
+assets/seminar video1.pptx
+assets/seminar video1.1.mp4
+assets/seminar video1.2.mp4
+assets/tech seminar final presentation.pptx
+
+# 求职/面试准备材料 — 隐私文件，禁止提交到公开仓库
+面试*.md
+求职*.md
+点钛*.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Original backups (compressed versions deployed instead)
+assets/creekside/top_original.png
+assets/creekside/top.png
+assets/fall video1_original.mp4
+._*
+.DS_Store

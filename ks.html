@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KS — Jiayan Cao</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Sans+SC:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=3">
+</head>
+<body>
+
+<div class="wrap narrow">
+  <nav>
+    <div class="logo"><a href="index.html">Jiayan Cao</a></div>
+    <a class="back" href="index.html">← 返回全部案例</a>
+  </nav>
+
+  <div class="case-head">
+    <div class="case-tags"><span>用户研究</span><span>双角色界面系统</span><span>迭代验证</span></div>
+    <h1 class="case-title">KS 步态训练评估系统</h1>
+    <p class="case-sub">同一套系统，要同时服务两种诉求完全相反的用户——治疗师需要快速、专业、可控；患者需要清楚、直觉、不怕犯错。这是 KS 界面系统要解决的核心矛盾。</p>
+
+    <div class="meta-grid">
+      <div class="m"><div class="k">角色</div><div class="v">交互设计 + 用户研究</div></div>
+      <div class="m"><div class="k">周期</div><div class="v">2021 — 2024</div></div>
+      <div class="m"><div class="k">平台</div><div class="v">嵌入式触控屏</div></div>
+      <div class="m"><div class="k">状态</div><div class="v">已获二类医疗器械注册证</div></div>
+    </div>
+
+    <div class="note-box accent">
+      <div class="dot"></div>
+      <p><span class="label">角色与协作</span>本人负责全链路交互设计与界面迭代，包括用户研究、流程定义、原型制作与上线后的可用性验证；后端软件、嵌入式系统与结构工程实现由对应工程师团队完成。安全束带工业设计亦由本人主导。</p>
+    </div>
+  </div>
+
+  <img class="hero-img stage" src="assets/KS/ks_hero.jpg" alt="KS device render">
+  <p class="img-caption">↑ KS 设备外观</p>
+
+  <div class="body-section">
+    <div class="st">01 — 问题背景</div>
+    <div>
+      <h2>功能已经实现，但体验还没有</h2>
+      <p>KS 源自日本九州产业大学的早期研究与原型验证，补充了卒中患者下肢康复流程中"站"与"步行"之间的关键环节——通过渐进式训练模式，重新教会患者行走过程中的重心转移与迈步协调。训练模式按患者恢复阶段递进：</p>
+      <ul>
+        <li><b>被动训练</b> — 由机器完全带动双腿运动，患者无需主动发力</li>
+        <li><b>辅助训练</b> — 患者需先完成重心转移，机器再辅助完成迈步</li>
+        <li><b>进阶辅助训练</b> — 患者需同时完成重心转移与摆动侧抬脚，机器才带动完成一次完整步态周期</li>
+        <li><b>力量与耐力训练</b> — 完全依靠患者双腿自主发力，抵抗设定阻抗进行肌肉锻炼</li>
+      </ul>
+      <p>初始版本只实现了训练功能本身，缺乏界面设计——可用性和美观性都不足。但更核心的挑战在于：这台设备要在家庭环境里被两类角色共同使用，两者的诉求几乎截然相反。</p>
+      <p>设计目标因此被定义为三个层次：<b>提升界面可用性与视觉清晰度</b>；<b>优化操作流程，降低两类用户的学习成本</b>；<b>提供数据可视化，辅助治疗师决策并引导患者训练动作</b>。</p>
+          <div class="img-row one">
+        <img src="assets/KS/原界面.png" alt="KS interface screen 1">
+      </div>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="st">02 — 双角色洞察</div>
+    <div>
+      <h2>同一台设备，两种完全不同的使用逻辑</h2>
+      <div class="img-row">
+        <div class="ph text-block">
+          <b>康复治疗师</b>
+          <span>背景：患者多、依靠经验评估、缺乏客观数据记录</span>
+          <span>痛点：难兼顾多人、缺乏直观可存档的记录手段</span>
+          <span>需求：提升指导效率、数据可视化辅助临床决策</span>
+        </div>
+        <div class="ph text-block">
+          <b>患者（多为老年群体）</b>
+          <span>背景：康复周期漫长，出院后仍需长期居家训练</span>
+          <span>痛点：缺乏专业指导、设备操作复杂、缺少即时反馈</span>
+          <span>需求：操作简洁、循序渐进引导、清晰可感知的反馈</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="st">03 — 设计决策</div>
+    <div>
+      <h2>四个具体问题，四个针对性解法</h2>
+      <ul>
+        <li><b>训练模式识别困难</b> → 每种模式只显示当前需调节的参数；训练过程中提供实时数据反馈，减少治疗师的人工干预频率</li>
+        <li><b>训练引导理解困难</b> → 仅保留必须的引导内容；使用直观图案替代文字说明，降低老年用户理解成本</li>
+        <li><b>数据报告信息混乱</b> → 核心指标前置突出、参数聚焦；支持多维度趋势对比与历史记录快速查找</li>
+        <li><b>用户管理操作复杂</b> → 新增用户时分步引导；切换用户给出高亮确认反馈；引入自动登出防止误操作</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="st">04 — 界面落地</div>
+    <div>
+      <h2>从洞察到界面：真实设计产出</h2>
+      <p>用户管理、训练模式选择、参数调节、训练引导、数据报告（单次 / 日志与趋势）——上面每一条洞察和解法，最终都对应到了具体的界面模块中。</p>
+      <p style="margin-top:32px;">系统整体信息架构如下：</p>
+      <svg viewBox="0 0 860 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin-top:8px;background:var(--paper-alt);border-radius:8px;border:0.5px solid var(--line);">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 z" fill="#5B6169"/>
+          </marker>
+        </defs>
+        <style>
+          .box{fill:#F7F5F0;stroke:#5B6169;stroke-width:1;}
+          .box.main{fill:#DCEAE7;stroke:#1F6E64;}
+          .lbl{font-family:'IBM Plex Sans SC',sans-serif;font-size:13px;fill:#14181C;}
+          .lbl-sm{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#5B6169;}
+          .edge{stroke:#5B6169;stroke-width:1;fill:none;marker-end:url(#arrow);}
+        </style>
+        <rect x="380" y="14" width="100" height="34" rx="17" class="box main"/>
+        <text x="430" y="35" text-anchor="middle" class="lbl">开始</text>
+        <rect x="330" y="78" width="200" height="34" rx="4" class="box main"/>
+        <text x="430" y="99" text-anchor="middle" class="lbl">初始界面</text>
+        <rect x="60"  y="160" width="140" height="34" rx="4" class="box"/>
+        <text x="130" y="181" text-anchor="middle" class="lbl">步行训练</text>
+        <rect x="260" y="160" width="140" height="34" rx="4" class="box"/>
+        <text x="330" y="181" text-anchor="middle" class="lbl">训练趋势</text>
+        <rect x="460" y="160" width="140" height="34" rx="4" class="box"/>
+        <text x="530" y="181" text-anchor="middle" class="lbl">训练记录</text>
+        <rect x="660" y="160" width="140" height="34" rx="4" class="box"/>
+        <text x="730" y="181" text-anchor="middle" class="lbl">用户</text>
+        <rect x="60" y="228" width="140" height="34" rx="4" class="box"/>
+        <text x="130" y="249" text-anchor="middle" class="lbl-sm">选择训练模式</text>
+        <rect x="60" y="284" width="140" height="34" rx="4" class="box"/>
+        <text x="130" y="305" text-anchor="middle" class="lbl-sm">设置训练参数</text>
+        <rect x="60" y="340" width="140" height="34" rx="4" class="box main"/>
+        <text x="130" y="361" text-anchor="middle" class="lbl">开始训练</text>
+        <rect x="10" y="400" width="90" height="34" rx="4" class="box"/>
+        <text x="55" y="421" text-anchor="middle" class="lbl-sm">实时参数</text>
+        <rect x="115" y="400" width="90" height="34" rx="4" class="box"/>
+        <text x="160" y="421" text-anchor="middle" class="lbl-sm">实时引导图</text>
+        <rect x="260" y="228" width="140" height="34" rx="4" class="box"/>
+        <text x="330" y="249" text-anchor="middle" class="lbl-sm">周期性训练趋势</text>
+        <rect x="440" y="228" width="90" height="34" rx="4" class="box"/>
+        <text x="485" y="249" text-anchor="middle" class="lbl-sm">当日记录</text>
+        <rect x="540" y="228" width="90" height="34" rx="4" class="box"/>
+        <text x="585" y="249" text-anchor="middle" class="lbl-sm">搜索记录</text>
+        <rect x="660" y="228" width="140" height="34" rx="4" class="box"/>
+        <text x="730" y="249" text-anchor="middle" class="lbl-sm">用户列表</text>
+        <rect x="640" y="284" width="80" height="34" rx="4" class="box"/>
+        <text x="680" y="305" text-anchor="middle" class="lbl-sm">查看</text>
+        <rect x="730" y="284" width="80" height="34" rx="4" class="box"/>
+        <text x="770" y="305" text-anchor="middle" class="lbl-sm">添加/修改</text>
+        <path class="edge" d="M430,48 V78"/>
+        <path class="edge" d="M400,95 H130 V160"/>
+        <path class="edge" d="M400,95 H330 V160"/>
+        <path class="edge" d="M460,95 H530 V160"/>
+        <path class="edge" d="M530,112 H730 V160"/>
+        <path class="edge" d="M130,194 V228"/>
+        <path class="edge" d="M130,262 V284"/>
+        <path class="edge" d="M130,318 V340"/>
+        <path class="edge" d="M110,374 V400"/>
+        <path class="edge" d="M150,374 V400"/>
+        <path class="edge" d="M330,194 V228"/>
+        <path class="edge" d="M500,194 H485 V228"/>
+        <path class="edge" d="M560,194 H585 V228"/>
+        <path class="edge" d="M730,194 V228"/>
+        <path class="edge" d="M710,262 V284"/>
+        <path class="edge" d="M760,262 V284"/>
+      </svg>
+      <p class="img-caption" style="margin-top:8px;">↑ KS 系统信息架构图</p>
+      <div class="img-row two">
+        <img src="assets/KS/实时.png" alt="KS interface screen 1">
+        <img src="assets/KS/实时引导.png" alt="KS interface screen 2">
+        <img src="assets/KS/实时引导2.png" alt="KS interface screen 3">
+        <img src="assets/KS/实时引导3.png" alt="KS interface screen 3">
+      </div>
+      <p class="img-caption" style="margin-top:8px;">四种模式的训练界面
+      </p>
+      <div class="img-row two">
+        <img src="assets/KS/报告.png" alt="KS interface screen 1">
+        <img src="assets/KS/报告图表.png" alt="KS interface screen 2">
+      </div>
+      <p class="img-caption" style="margin-top:8px;">训练报告界面
+      </p>
+      <div class="img-row two">
+        <img src="assets/KS/日志.png" alt="KS interface screen 1">
+        <img src="assets/KS/趋势.png" alt="KS interface screen 2">
+      </div>
+      <p class="img-caption" style="margin-top:8px;">训练日志和趋势界面
+      </p>
+    </div>
+  </div>
+  <div class="body-section">
+    <div class="st">05 — 真实反馈与再迭代</div>
+    <div>
+      <h2>上线之后，用户又告诉了我们新的问题</h2>
+      <p>方案落地并进入真实使用后，我们持续收集了治疗师和患者的使用反馈。大部分核心痛点得到了改善，但真实场景也暴露出一些新的摩擦：</p>
+      <ul>
+        <li><b>老年患者对红色轨迹的含义理解有困难</b> — 训练引导中的重心偏移轨迹图对于非医疗背景的老年用户来说仍较为抽象，需要更直观的视觉解释辅助建立认知</li>
+        <li><b>治疗师信息录入环节存在冗余</b> — 在多患者管理场景下，部分录入步骤被认为流程偏长，增加了切换管理的时间成本</li>
+        <li><b>特定训练动作的图示引导不够充分</b> — 初次使用的患者在某些动作步骤上仍存在理解偏差，单纯依赖文字说明的局限性在此时显现</li>
+      </ul>
+      <p>这三条摩擦点已作为下一轮设计迭代的优先级输入进行跟踪。对我而言，这恰好印证了一个认知：<b>嵌入式医疗系统的体验设计，需要在真实临床场景中经历足够多次的"发现-修正"循环才能真正成熟，而不是靠一次封闭的需求定义就预期一步到位。</b></p>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <div class="st">06 — 一个细节</div>
+    <div>
+      <h2>安全束带：在"防摔"和"别束缚太紧"之间反复权衡</h2>
+      <p>KS 的防护方案刻意区别于医院常见的大型减重支持系统，核心目标是在提供跌倒保护的同时，尽可能保留患者的自主活动自由度。从接触面积、绑缚位置到快拆结构，每一版都在"够安全"和"不妨碍训练动作"之间重新权衡。</p>
+      <p>防护方案与 VRRAS 通用兼容——同一套安全逻辑在两条产品线之间复用，既保障了体验一致性，也降低了开发与制造成本。</p>
+     <div class="img-row two">
+        <div style="position:relative;">
+          <img src="assets/KS/束带正面.jpg" alt="KS interface screen 1">
+        </div>
+        <div style="position:relative;">
+          <img src="assets/KS/束带背面.jpg" alt="KS interface screen 2">
+        </div>
+      </div>
+      <div class="img-row three">
+        <div style="position:relative;">
+          <img src="assets/KS/ks_sd1.png" alt="KS interface screen 1">
+        </div>
+        <div style="position:relative;">
+          <img src="assets/KS/ks_sd2.png" alt="KS interface screen 2">
+        </div>
+        <div style="position:relative;">
+          <img src="assets/KS/ks_sd3.png" alt="KS interface screen 3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <a class="back" href="d2.html">← D2</a>
+    <a class="next" href="vrras.html">下一个案例<b>VRRAS 步态康复机器人 →</b></a>
+  </footer>
+  <div style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);padding:0 0 32px;">© 2026 Jiayan Cao. All rights reserved.</div>
+</div>
+
+</body>
+</html>
